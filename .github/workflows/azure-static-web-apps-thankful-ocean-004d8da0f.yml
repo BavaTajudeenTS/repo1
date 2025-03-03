@@ -22,8 +22,6 @@ jobs:
         with:
           submodules: true
           lfs: false
-      - name: Install OIDC Client from Core Package
-        run: npm install @actions/core@1.6.0 @actions/http-client
       - name: Get Id Token
         uses: actions/github-script@v6
         id: idtoken
@@ -32,19 +30,15 @@ jobs:
                const coredemo = require('@actions/core')
                return await coredemo.getIDToken()
            result-encoding: string
-      - name: Install Dependencies
-        run: npm install  # Install dependencies if you're using Node.js
-      - name: Build the App
-        run: npm run build  # Add the build command for your framework
       - name: Build And Deploy
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v1
         with:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_THANKFUL_OCEAN_004D8DA0F }}
           action: "upload"
-          app_location: "/" # App source code path
+          app_location: "/"  # App source code path
           api_location: ""  # API source code path - optional
-          output_location: "./build"  # Adjust if your framework outputs to a different folder (e.g., 'build' for React)
+          output_location: "."  # Static files, no build required
           github_id_token: ${{ steps.idtoken.outputs.result }}
 
   close_pull_request_job:
